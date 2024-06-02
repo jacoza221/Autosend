@@ -1,1 +1,7 @@
+# python version is 3.11
+
 requests==2.24.0
+python3 -m pip install find-github-email
+selenium
+json
+winreg
