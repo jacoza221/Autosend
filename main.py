@@ -25,8 +25,14 @@ class Main:
         self.getUserData = []
         self.allEmails = []
 
+        # open the browser
+        # options = webdriver.ChromeOptions()
+        # options.add_argument("user-data-dir=C:\\Users\\3\\AppData\\Local\\Google\\Chrome\\User Data")
+        # options.add_argument("profile-directory=Profile 5")
         self.driver = webdriver.Chrome()
-        self.driver.maximize_window()
+        # self.driver = webdriver.Chrome(options=options)
+        # self.driver.maximize_window()
+        # self.driver.quit()
 
         self.getUserInfo()
 
@@ -71,7 +77,6 @@ class Main:
     def getUserInfo(self):
         """ get users profile of github """
         self.driver.get("https://committers.top/switzerland")
-
         try:
             if self.loadCompleted("/html/body/div/section/table[1]", 30):
                 table_element = self.driver.find_element(By.CLASS_NAME, 'users-list')
@@ -89,6 +94,7 @@ class Main:
                     # with open('extract_data.txt', mode='a', encoding='utf-8') as log_file:
                     #     log_file.write(' '.join(row_data) + '\n')
                 self.getUserData = table_data
+                self.driver.quit()
                 self.getEmail()
         except TimeoutException:
             print("not find user table so exit program")
@@ -96,28 +102,24 @@ class Main:
         except:
             print("has been login Ipaybank - can't find element")
 
-        self.driver.quit()
-
     def getEmail(self):
         for githubUsername in self.getUserData:
-            print(githubUsername)
             try:
                 response = find_github_email.find(str(githubUsername))
             except:
                 print(f"Email not find reason is find_github_email module error : username is{githubUsername}")
             if response['found'] == False:
-                print("Mail not find.")
+                print(response)
             else:
                 for eachEmail in response['email']:
                     self.allEmails.append(eachEmail)
-            print (self.allEmails)
 
     def sendEmail(self):
         for eachEmail in self.allEmails:
             pass
 
 if __name__ == "__main__":
-    # Main()
+    Main()
     # result = find_github_email.find("fabian")
     # print(result)
 
