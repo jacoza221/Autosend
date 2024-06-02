@@ -10,6 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from winreg import *
 import find_github_email
+import smtplib
+from email.message import EmailMessage
 
 class Main:
     def __init__(self,):
@@ -91,7 +93,6 @@ class Main:
         except TimeoutException:
             print("not find user table so exit program")
             sys.exit()
-            return
         except:
             print("has been login Ipaybank - can't find element")
 
@@ -103,14 +104,20 @@ class Main:
             try:
                 response = find_github_email.find(str(githubUsername))
             except:
-                pass
+                print(f"Email not find reason is find_github_email module error : username is{githubUsername}")
             if response['found'] == False:
                 print("Mail not find.")
             else:
                 for eachEmail in response['email']:
                     self.allEmails.append(eachEmail)
             print (self.allEmails)
+
+    def sendEmail(self):
+        for eachEmail in self.allEmails:
+            pass
+
 if __name__ == "__main__":
     # Main()
-    result = find_github_email.find("fabian")
-    print(result)
+    # result = find_github_email.find("fabian")
+    # print(result)
+
