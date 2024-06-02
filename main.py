@@ -21,6 +21,7 @@ class Main:
         self.password = info['password']
         self.content = info['content']
         self.getUserData = []
+        self.allEmails = []
 
         self.driver = webdriver.Chrome()
         self.driver.maximize_window()
@@ -99,7 +100,16 @@ class Main:
     def getEmail(self):
         for githubUsername in self.getUserData:
             print(githubUsername)
-
+            try:
+                response = find_github_email.find(str(githubUsername))
+            except:
+                pass
+            if response['found'] == False:
+                print("Mail not find.")
+            else:
+                for eachEmail in response['email']:
+                    self.allEmails.append(eachEmail)
+            print (self.allEmails)
 if __name__ == "__main__":
     # Main()
     result = find_github_email.find("fabian")
